@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="ru">
+<a href="{% url 'home' %}"><button>Назад</button></a>
+<head>
+    <meta charset="UTF-8">
+    <title>Отчеты</title>
+</head>
+<body>
+    <div class="report-container">
+        <div class="filter-section">
+            <h2>Параметры отчета</h2>
+            <form method="GET">
+                <div class="filter-group">
+                    <p>От:
+                    <input type="date" class="date-input" name="start_date" required
+                    <p>   До:
+                    <input type="date" class="date-input" name="end_date" required
+                    <input type="number" class="article-input" name="article_num" 
+                           placeholder="Номер статьи">
+                    <button class="report-button caught-btn">Пойманы</button>
+                    <button class="report-button release-btn">Освободятся</button>
+                    <button class="report-button stats-btn">Статистика</button>
+                </div>
+            </form>
+        </div>
+        <hr>
+
+        
+    </div>
+</body>
+</html>

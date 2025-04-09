@@ -98,5 +98,27 @@ def add_panishment(request):
 
 
 def archive_panishment(request):
-    panishments = Panishment.objects.all()
-    return render(request, "testdb/archive_panishment.html", {"panishments": panishments})
+    panishments = Panishment.objects.all().order_by('-panishment_num')
+    
+    # Получаем все параметры фильтрации
+    cs_filter = request.GET.get('cs')
+    person_id_filter = request.GET.get('person_id')
+    fio_filter = request.GET.get('fio')
+    article_num_filter = request.GET.get('article_num')  # Новый параметр
+
+    # Применяем фильтры
+    if cs_filter:
+        panishments = panishments.filter(cs__cs=cs_filter)
+    if person_id_filter:
+        panishments = panishments.filter(person_id=person_id_filter)
+    if fio_filter:
+        panishments = panishments.filter(fio__icontains=fio_filter)
+    if article_num_filter:  # Новый фильтр
+        panishments = panishments.filter(article_num=article_num_filter)
+
+    return render(request, "testdb/archive_panishment.html", {
+        "panishments": panishments,
+    })
+
+def reports(request):
+    return render(request, "testdb/reports.html")

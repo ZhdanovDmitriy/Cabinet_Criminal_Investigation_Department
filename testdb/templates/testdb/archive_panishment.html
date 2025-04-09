@@ -17,16 +17,32 @@
             th {
                 background-color: #f2f2f2;
             }
-            form {
-                margin-bottom: 20px;
+            .filter-form {
+                margin-bottom: 10px;  /* Отступ снизу для отделения от таблицы */
             }
-            button {
-                margin-top: 10px;
+            .filter-form input {
+                margin-right: 10px;   /* Отступ справа 10px между полями ввода */
+                padding: 2px;        /* Внутренние отступы 5px для текста в полях */
+            }
+            .filter-form button {
+                padding: 1px 1px; /* Вертикальный отступ 5px, горизонтальный 15px */
             }
         </style>
     </head>
 <body>
     <h1>Архив</h1>
+    
+    <form method="GET" action="" class="filter-form">
+        <input type="text" name="cs" placeholder="Номер дела" value="{{ request.GET.cs }}">
+        <input type="text" name="person_id" placeholder="ID" value="{{ request.GET.person_id }}">
+        <input type="text" name="fio" placeholder="ФИО" value="{{ request.GET.fio }}">
+        <!-- Новое поле для номера статьи -->
+        <input type="text" name="article_num" placeholder="Номер статьи" value="{{ request.GET.article_num }}">
+        
+        <button type="submit">Фильтровать</button>
+        <a href="{% url 'archive_panishment' %}"><button type="button">Сбросить</button></a>
+    </form>
+
     <table>
         <thead>
             <tr>

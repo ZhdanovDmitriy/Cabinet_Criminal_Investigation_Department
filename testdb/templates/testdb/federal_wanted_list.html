@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Федеральный розыск</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid black;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        .federal-id {
+            width: 150px;
+            max-width: 200px;
+        }
+        form {
+            margin-bottom: 20px;
+        }
+        button {
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<a href="{% url 'home' %}"><button>Назад</button></a>
+<body>
+
+    <h1>Федеральный розыск</h1>
+
+    <form method="POST">
+        {% csrf_token %}
+        <input type="number" name="person_id" placeholder="ID человека" required>
+        <input type="text" name="fio" placeholder="ФИО" required>
+        <input type="number" name="article_num" placeholder="Номер статьи" required>
+        <button type="submit">Добавить</button>
+    </form>
+
+    {% if error %}
+    <p style="color: red;">{{ error }}</p>
+    {% endif %}
+
+    <table>
+        <thead>
+            <tr>
+                <th class="federal-id">Федеральный ID</th>
+                <th>ID</th>
+                <th>ФИО</th>
+                <th>Номер статьи</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for wanted in wanted_list|dictsortreversed:"fi" %}
+            <tr>
+                <td class="federal-id">{{ wanted.fi }}</td>
+                <td>{{ wanted.person_id }}</td>
+                <td>{{ wanted.fio }}</td>
+                <td>{{ wanted.article_num }}</td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="4">Записей пока нет</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>

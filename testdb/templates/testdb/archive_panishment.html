@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="ru">
+    <a href="{% url 'home' %}"><button>Назад</button></a>
+    <head>
+        <meta charset="UTF-8">
+        <title>Архив</title>
+        <style>
+            table {
+                width: 100%;
+                border-collapse: collapse;
+            }
+            th, td {
+                border: 1px solid black;
+                padding: 8px;
+                text-align: left;
+            }
+            th {
+                background-color: #f2f2f2;
+            }
+            form {
+                margin-bottom: 20px;
+            }
+            button {
+                margin-top: 10px;
+            }
+        </style>
+    </head>
+<body>
+    <h1>Архив</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Номер дела</th>
+                <th>ID</th>
+                <th>ФИО</th>
+                <th>Номер статьи</th>
+                <th>Тип наказания</th>
+                <th>Значение</th>
+                <th>Тип дела</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for panishment in panishments|dictsortreversed:"panishment_num" %}
+            <tr>
+                <td>{{ panishment.cs_id }}</td>
+                <td>{{ panishment.person_id }}</td>
+                <td>{{ panishment.fio }}</td>
+                <td>{{ panishment.article_num }}</td>
+                <td>{{ panishment.get_punishment_type_display }}</td>
+                <td>{{ panishment.numerical_value }}</td>
+                <td>{{ panishment.get_fi_flag_display }}</td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="7">Записей пока нет</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>

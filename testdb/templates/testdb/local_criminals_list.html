@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Список местных преступников</h2>
+<a href="{% url 'add_local_criminal' %}">Добавить преступника</a>
+<ul>
+    {% for criminal in criminals %}
+    <li>{{ criminal.fio }} (ID: {{ criminal.person_id }}) - Наказание: {{ criminal.final_panishment }}</li>
+    {% endfor %}
+</ul>
+{% endblock %}

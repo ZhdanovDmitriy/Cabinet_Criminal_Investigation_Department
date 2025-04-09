@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <a href="{% url 'federal_wanted_list' %}"><button>Федеральный розыск</button></a>
+    <a href="{% url 'article_list' %}"><button>Уголовный кодекс</button></a>
+    <a href="{% url 'archive_panishment' %}"><button>Архив</button></a>
+    <title>Оформление преступников</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid black;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        form {
+            margin-bottom: 20px;
+        }
+        button {
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Оформление преступников</h1>
+
+    <form method="post">
+        {% csrf_token %}
+        <div style="display: flex; align-items: flex-end; gap: 40px; flex-wrap: wrap;">
+            {% for field in form %}
+                <div style="flex: 0 0 auto;">
+                    {{ field.label_tag }}
+                    {{ field }}
+                </div>
+            {% endfor %}
+            <div style="flex: 0 0 auto; margin-bottom: 0px;">
+                <button type="submit">Добавить</button>
+            </div>
+        </div>
+    </form>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Номер дела</th>
+                <th>ID</th>
+                <th>ФИО</th>
+                <th>Статья</th>
+                <th>Дата ареста</th>
+                <th>Суммарное наказание</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for criminal in criminals|dictsortreversed:"cs" %}
+            <tr>
+                <td>{{ criminal.cs }}</td>
+                <td>{{ criminal.person_id }}</td>
+                <td>{{ criminal.fio }}</td>
+                <td>{{ criminal.article_num }}</td>
+                <td>{{ criminal.arrest_time }}</td>
+                <td>{{ criminal.final_panishment }}</td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="6">Записей пока нет</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>

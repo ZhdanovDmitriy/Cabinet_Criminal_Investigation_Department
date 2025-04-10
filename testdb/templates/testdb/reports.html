@@ -5,27 +5,92 @@
     <meta charset="UTF-8">
     <title>Отчеты</title>
 </head>
+<style>
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    th, td {
+        border: 1px solid black;
+        padding: 8px;
+        text-align: left;
+    }
+
+    th {
+        background-color: #f2f2f2;
+    }
+</style>
 <body>
     <div class="report-container">
         <div class="filter-section">
             <h2>Параметры отчета</h2>
             <form method="GET">
                 <div class="filter-group">
-                    <p>От:
-                    <input type="date" class="date-input" name="start_date" required
-                    <p>   До:
-                    <input type="date" class="date-input" name="end_date" required
-                    <input type="number" class="article-input" name="article_num" 
-                           placeholder="Номер статьи">
-                    <button class="report-button caught-btn">Пойманы</button>
-                    <button class="report-button release-btn">Освободятся</button>
-                    <button class="report-button stats-btn">Статистика</button>
+                    От:<input type="date" class="date-input" name="start_date">
+                    До:<input type="date" class="date-input" name="end_date">
+                    <input type="number" class="article-input" name="article_num" placeholder="Номер статьи">
+                    <button type="submit" name="action" value="caught" class="report-button caught-btn">Пойманы</button>
+                    <button type="submit" name="action" value="release" class="report-button release-btn">Освободятся</button>
+                    <button type="submit" name="action" value="stats" class="report-button stats-btn">Статистика</button>
                 </div>
             </form>
         </div>
         <hr>
-
-        
+        {% if report_type == 'caught' %}
+        <table>
+            <tr>
+                <th>Номер дела</th>
+                <th>ID</th>
+                <th>ФИО</th>
+                <th>Статья</th>
+                <th>Дата ареста</th>
+                <th>Наказание</th>
+            </tr>
+            {% for item in report_data %}
+            <tr>
+                <td>{{ item.cs }}</td>
+                <td>{{ item.person_id }}</td>
+                <td>{{ item.fio }}</td>
+                <td>{{ item.article_num }}</td>
+                <td>{{ item.arrest_time|date:"d-m-Y" }}</td>
+                <td>{{ item.final_panishment }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+        {% elif report_type == 'release' %}
+        <table>
+            <tr>
+                <th>ID</th>
+                <th>ФИО</th>
+                <th>Статья</th>
+                <th>Дата ареста</th>
+                <th>Дата освобождения</th>
+            </tr>
+            {% for item in report_data %}
+            <tr>
+                <td>{{ item.person_id }}</td>
+                <td>{{ item.fio }}</td>
+                <td>{{ item.article_num }}</td>
+                <td>{{ item.arrest_time|date:"d-m-Y" }}</td>
+                <td>{{ item.release_date|date:"d-m-Y" }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+        {% elif report_type == 'stats' %}
+        <table>
+            <tr>
+                <th>Статья</th>
+                <th>Количество</th>
+            </tr>
+            {% for item in report_data %}
+            <tr>
+                <td>{{ item.article_num }}</td>
+                <td>{{ item.count }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+        {% endif %}
     </div>
 </body>
 </html>

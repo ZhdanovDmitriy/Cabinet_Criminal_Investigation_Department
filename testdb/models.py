@@ -130,12 +130,12 @@ class Panishment(models.Model):
     person_id = models.IntegerField(verbose_name="ID человека")
     fio = models.CharField(max_length=255, verbose_name="ФИО")
     article_num = models.IntegerField(verbose_name="Номер статьи")
-    punishment_type = models.CharField(  # Новое поле
+    punishment_type = models.CharField(
         max_length=20,
         choices=PunishmentType.choices,
         verbose_name="Тип наказания"
     )
-    numerical_value = models.IntegerField(verbose_name="Числовое значение")  # Новое поле
+    numerical_value = models.IntegerField(verbose_name="Числовое значение")
     fi_flag = models.IntegerField(choices=[(0, "Локальное"), (1, "Федеральное")], verbose_name="Статус дела")
 
     def __str__(self):

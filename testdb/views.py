@@ -1,5 +1,7 @@
+from django.db.models import Sum
+from datetime import datetime, timedelta
 from django.shortcuts import render, redirect, redirect
-from .models import Article, FederalWanted, LocalCriminals, Panishment
+from .models import Article, FederalWanted, LocalCriminals, Panishment, PunishmentType
 from .forms import LocalCriminalsForm, PanishmentForm
 
 def home(request):
@@ -120,5 +122,119 @@ def archive_panishment(request):
         "panishments": panishments,
     })
 
-def reports(request):
-    return render(request, "testdb/reports.html")
+def reports_view(request):
+    start_date_str = request.GET.get('start_date')
+    end_date_str = request.GET.get('end_date')
+    article_num = request.GET.get('article_num')
+    action = request.GET.get('action')
+
+    start_date = None
+    end_date = None
+    if start_date_str:
+        start_date = datetime.strptime(start_date_str, '%Y-%m-%d').date()
+    if end_date_str:
+        end_date = datetime.strptime(end_date_str, '%Y-%m-%d').date()
+
+    context = {
+        'start_date': start_date_str,
+        'end_date': end_date_str,
+        'article_num': article_num,
+        'report_type': None,
+        'report_data': None,
+    }
+
+    if action == 'caught':
+        queryset = LocalCriminals.objects.all()
+        if start_date and end_date:
+            queryset = queryset.filter(arrest_time__range=[start_date, end_date])
+        elif start_date:
+            queryset = queryset.filter(arrest_time__gte=start_date)
+        elif end_date:
+            queryset = queryset.filter(arrest_time__lte=end_date)
+        if article_num:
+            queryset = queryset.filter(article_num=article_num)
+        context['report_data'] = queryset
+        context['report_type'] = 'caught'
+
+    elif action == 'release':
+        release_data = []
+        person_ids = Panishment.objects.filter(
+            punishment_type=PunishmentType.ARREST
+        ).values_list('person_id', flat=True).distinct()
+
+        for person_id in person_ids:
+            if article_num:
+                if not Panishment.objects.filter(
+                    person_id=person_id,
+                    article_num=article_num,
+                    punishment_type=PunishmentType.ARREST
+                ).exists():
+                    continue
+
+            cs_list = LocalCriminals.objects.filter(person_id=person_id).order_by('arrest_time')
+            if not cs_list.exists():
+                continue
+
+            current_end = None
+            total_arrest_days = 0
+
+            for cs in cs_list:
+                arrest_days = Panishment.objects.filter(
+                    cs=cs,
+                    punishment_type=PunishmentType.ARREST
+                ).aggregate(total=Sum('numerical_value'))['total'] or 0
+
+                total_arrest_days += arrest_days
+
+                if current_end is None:
+                    current_end = cs.arrest_time + timedelta(days=arrest_days)
+                else:
+                    if cs.arrest_time < current_end:
+                        overlap = (current_end - cs.arrest_time).days
+                        arrest_days += overlap
+                    current_end = cs.arrest_time + timedelta(days=arrest_days)
+
+            if total_arrest_days <= 0:
+                continue
+
+            if start_date and current_end < start_date:
+                continue
+            if end_date and current_end > end_date:
+                continue
+
+            last_cs = cs_list.last()
+            release_data.append({
+                'person_id': person_id,
+                'fio': last_cs.fio,
+                'article_num': last_cs.article_num,
+                'arrest_time': last_cs.arrest_time,
+                'release_date': current_end,
+            })
+
+        context['report_data'] = release_data
+        context['report_type'] = 'release'
+
+    elif action == 'stats':
+        stats_data = []
+        articles = Article.objects.all()
+        if article_num:
+            articles = articles.filter(article_num=article_num)
+
+        for article in articles:
+            panishments = Panishment.objects.filter(article_num=article.article_num)
+            if start_date and end_date:
+                panishments = panishments.filter(cs__arrest_time__range=[start_date, end_date])
+            elif start_date:
+                panishments = panishments.filter(cs__arrest_time__gte=start_date)
+            elif end_date:
+                panishments = panishments.filter(cs__arrest_time__lte=end_date)
+
+            stats_data.append({
+                'article_num': article.article_num,
+                'count': panishments.count(),
+            })
+
+        context['report_data'] = stats_data
+        context['report_type'] = 'stats'
+
+    return render(request, 'testdb/reports.html', context)

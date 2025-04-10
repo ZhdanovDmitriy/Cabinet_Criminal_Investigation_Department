@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Система учета преступлений{% endblock %}</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+</head>
+<body>
+    <div class="container">
+        <nav class="navbar">
+            <a href="{% url 'home' %}" class="nav-button">Главная</a>
+            <a href="{% url 'federal_wanted_list' %}" class="nav-button">Федеральный розыск</a>
+            <a href="{% url 'article_list' %}" class="nav-button">Уголовный кодекс</a>
+            <a href="{% url 'archive_panishment' %}" class="nav-button">Архив</a>
+            <a href="{% url 'reports' %}" class="nav-button">Отчеты</a>
+        </nav>
+        
+        {% block content %}{% endblock %}
+    </div>
+</body>
+</html>

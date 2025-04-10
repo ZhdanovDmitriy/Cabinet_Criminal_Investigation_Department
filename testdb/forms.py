@@ -4,7 +4,10 @@ import datetime
 
 class LocalCriminalsForm(forms.ModelForm):
     arrest_time = forms.DateField(
-        widget=forms.DateInput(attrs={'type': 'date'}),
+        widget=forms.DateInput(attrs={
+            'type': 'date',
+            'placeholder': 'Дата ареста'  # плейсхолдер для даты
+        }),
         label="Время ареста",
         initial=datetime.date.today,
     )
@@ -12,6 +15,12 @@ class LocalCriminalsForm(forms.ModelForm):
     class Meta:
         model = LocalCriminals
         fields = ["person_id", "fio", "article_num", "arrest_time"]
+        widgets = {
+            'person_id': forms.TextInput(attrs={'placeholder': 'ID'}),
+            'fio':        forms.TextInput(attrs={'placeholder': 'ФИО'}),
+            'article_num':forms.TextInput(attrs={'placeholder': 'Статья'}),
+            # 'arrest_time' уже задан выше
+        }
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)

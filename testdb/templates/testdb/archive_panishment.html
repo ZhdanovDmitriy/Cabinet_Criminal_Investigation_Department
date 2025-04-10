@@ -1,35 +1,7 @@
-<!DOCTYPE html>
-<html lang="ru">
-    <a href="{% url 'home' %}"><button>Назад</button></a>
-    <head>
-        <meta charset="UTF-8">
-        <title>Архив</title>
-        <style>
-            table {
-                width: 100%;
-                border-collapse: collapse;
-            }
-            th, td {
-                border: 1px solid black;
-                padding: 8px;
-                text-align: left;
-            }
-            th {
-                background-color: #f2f2f2;
-            }
-            .filter-form {
-                margin-bottom: 10px;  /* Отступ снизу для отделения от таблицы */
-            }
-            .filter-form input {
-                margin-right: 10px;   /* Отступ справа 10px между полями ввода */
-                padding: 2px;        /* Внутренние отступы 5px для текста в полях */
-            }
-            .filter-form button {
-                padding: 1px 1px; /* Вертикальный отступ 5px, горизонтальный 15px */
-            }
-        </style>
-    </head>
-<body>
+{% extends "base.html" %}
+{% block title %}Оформление преступников{% endblock %}
+
+{% block content %}
     <h1>Архив</h1>
     
     <form method="GET" action="" class="filter-form">
@@ -40,7 +12,9 @@
         <input type="text" name="article_num" placeholder="Номер статьи" value="{{ request.GET.article_num }}">
         
         <button type="submit">Фильтровать</button>
-        <a href="{% url 'archive_panishment' %}"><button type="button">Сбросить</button></a>
+        <a href="{% url 'archive_panishment' %}" class="reset-button">
+            <button type="button">Сбросить</button>
+        </a>
     </form>
 
     <table>
@@ -73,5 +47,4 @@
             {% endfor %}
         </tbody>
     </table>
-</body>
-</html>
+{% endblock %}

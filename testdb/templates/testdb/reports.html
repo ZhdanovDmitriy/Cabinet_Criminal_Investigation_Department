@@ -1,27 +1,7 @@
-<!DOCTYPE html>
-<html lang="ru">
-<a href="{% url 'home' %}"><button>Назад</button></a>
-<head>
-    <meta charset="UTF-8">
-    <title>Отчеты</title>
-</head>
-<style>
-    table {
-        width: 100%;
-        border-collapse: collapse;
-    }
+{% extends "base.html" %}
+{% block title %}Оформление преступников{% endblock %}
 
-    th, td {
-        border: 1px solid black;
-        padding: 8px;
-        text-align: left;
-    }
-
-    th {
-        background-color: #f2f2f2;
-    }
-</style>
-<body>
+{% block content %}
     <div class="report-container">
         <div class="filter-section">
             <h2>Параметры отчета</h2>
@@ -92,5 +72,4 @@
         </table>
         {% endif %}
     </div>
-</body>
-</html>
+{% endblock %}

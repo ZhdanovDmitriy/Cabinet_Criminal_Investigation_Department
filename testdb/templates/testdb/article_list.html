@@ -1,34 +1,7 @@
-<!DOCTYPE html>
-<html lang="ru">
-    <head>
-        <meta charset="UTF-8">
-        <title>Уголовный кодекс</title>
-        <style>
-            table {
-                width: 100%;
-                border-collapse: collapse;
-            }
-            th, td {
-                border: 1px solid black;
-                padding: 8px;
-                text-align: left;
-            }
-            th {
-                background-color: #f2f2f2;
-            }
-            form {
-                margin-bottom: 20px;
-            }
-            button {
-                margin-top: 10px;
-            }
-            select{
-                padding: 2px;
-            }
-        </style>
-    </head>
-<a href="{% url 'home' %}"><button>Назад</button></a>
-<body>
+{% extends "base.html" %}
+{% block title %}Оформление преступников{% endblock %}
+
+{% block content %}
     <h1>Уголовный кодекс</h1>
 
     <form method="POST">
@@ -43,7 +16,7 @@
             <option value="Death">Смертная казнь</option>
         </select>
         
-        <input type="number" name="numerical_value" placeholder="Числовое значение" required>
+        <input type="number" name="numerical_value" placeholder="Значение" required>
         
         <select name="punishment_type_relapse">
             <option value="Fine">Штраф</option>
@@ -52,7 +25,7 @@
             <option value="Death">Смертная казнь</option>
         </select>
         
-        <input type="number" name="numerical_value_relapse" placeholder="Числовое значение при рецидиве" required>
+        <input type="number" name="numerical_value_relapse" placeholder="Значение" required>
         
         <button type="submit">Добавить</button>
     </form>
@@ -89,10 +62,7 @@
             {% endfor %}
         </tbody>
     </table>
-    
-    
-</body>
-</html>
+{% endblock %}
 
 
 

@@ -29,7 +29,7 @@ def article_list(request):
                 punishment_type_relapse=request.POST.get('punishment_type_relapse'),
                 numerical_value_relapse=request.POST.get('numerical_value_relapse')
             )
-            return redirect('article_list')  # Перенаправляем на GET-запрос после успешного добавления
+            return redirect('article_list')
         except Exception as e:
             return render(request, 'testdb/article_list.html', {
                 'articles': Article.objects.all(),
@@ -102,20 +102,18 @@ def add_panishment(request):
 def archive_panishment(request):
     panishments = Panishment.objects.all().order_by('-panishment_num')
     
-    # Получаем все параметры фильтрации
     cs_filter = request.GET.get('cs')
     person_id_filter = request.GET.get('person_id')
     fio_filter = request.GET.get('fio')
-    article_num_filter = request.GET.get('article_num')  # Новый параметр
+    article_num_filter = request.GET.get('article_num')
 
-    # Применяем фильтры
     if cs_filter:
         panishments = panishments.filter(cs__cs=cs_filter)
     if person_id_filter:
         panishments = panishments.filter(person_id=person_id_filter)
     if fio_filter:
         panishments = panishments.filter(fio__icontains=fio_filter)
-    if article_num_filter:  # Новый фильтр
+    if article_num_filter:
         panishments = panishments.filter(article_num=article_num_filter)
 
     return render(request, "testdb/archive_panishment.html", {
@@ -158,8 +156,17 @@ def reports_view(request):
 
     elif action == 'release':
         release_data = []
+
+        # Исключаем person_id, у которых есть хотя бы одно наказание типа Death
+        excluded_person_ids = Panishment.objects.filter(
+            punishment_type=PunishmentType.DEATH
+        ).values_list('person_id', flat=True).distinct()
+
+        # Берём только тех, у кого есть наказание типа Arrest, и кто не в списке исключённых
         person_ids = Panishment.objects.filter(
             punishment_type=PunishmentType.ARREST
+        ).exclude(
+            person_id__in=excluded_person_ids
         ).values_list('person_id', flat=True).distinct()
 
         for person_id in person_ids:
@@ -220,6 +227,9 @@ def reports_view(request):
         if article_num:
             articles = articles.filter(article_num=article_num)
 
+        total_count = 0
+        article_counts = []
+
         for article in articles:
             panishments = Panishment.objects.filter(article_num=article.article_num)
             if start_date and end_date:
@@ -229,10 +239,21 @@ def reports_view(request):
             elif end_date:
                 panishments = panishments.filter(cs__arrest_time__lte=end_date)
 
+            count = panishments.count()
+            total_count += count
+            article_counts.append((article.article_num, count))
+
+        # Формируем список с процентами
+        for article_num, count in article_counts:
+            percent = (count / total_count * 100) if total_count > 0 else 0
             stats_data.append({
-                'article_num': article.article_num,
-                'count': panishments.count(),
+                'article_num': article_num,
+                'count': count,
+                'percent': round(percent, 2),
             })
+        
+        stats_data.sort(key=lambda x: x['percent'], reverse=True)
+        stats_data = [item for item in stats_data if item['percent'] > 5]
 
         context['report_data'] = stats_data
         context['report_type'] = 'stats'

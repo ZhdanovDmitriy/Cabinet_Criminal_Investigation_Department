@@ -1,111 +1,110 @@
 /* Сброс box-sizing */
 *, *::before, *::after {
-    box-sizing: border-box;
-  }
-  
-  /* Всегда резервируем место под скроллбар */
-  html {
-    overflow-y: scroll;
-  }
-  
-  /* Базовые настройки */
-  body {
-    font-family: "Segoe UI", sans-serif;
-    background-color: #f4f6f9;
-    color: #2e3b4e;
-    margin: 5px;
-    padding: 5px;
-  }
-  
-  /* Заголовки */
-  h1, h2 {
-    text-align: center;
-    color: #1a2634;
-    margin-bottom: 10px;
-  }
-  
-  /* Кнопки навигации */
-  .nav-button {
-    display: inline-block;
-    width: 150px;
-    background-color: #2a3f54;
-    color: #fff;
-    text-decoration: none;
-    padding: 8px 10px;
-    border-radius: 6px;
-    font-size: 12px;
-    text-align: center;
-    cursor: pointer;
-    transition: background-color 0.2s ease;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-    margin: 0 5px 10px;
-  }
-  .nav-button:hover {
-    background-color: #1a2634;
-  }
-  
-  /* Общие стили для input, select, button */
-  input, select, button {
-    width: 150px;
-    padding: 8px 10px;
-    margin-bottom: 10px;
-    border: 1px solid #ccc;
-    border-radius: 6px;
-    font-family: inherit;
-    font-size: inherit;
-    box-sizing: border-box;
-  }
-  button {
-    background-color: #2a3f54;
-    color: #fff;
-    border: none;
-    transition: background-color 0.2s ease;
-  }
-  button:hover {
-    background-color: #1a2634;
-  }
-  
-  /* Специальные формы */
-  form {
-    background-color: #ffffff;
-    padding: 10px;
-    border-radius: 8px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-    max-width: 1300px;
-    margin: 0 auto 20px;
-  }
-  
-  /* Таблицы */
-  table {
-    width: 100%;
-    border-collapse: collapse;
-    border-radius: 8px;
-    overflow: hidden;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.06);
-  }
-  th, td {
-    padding: 12px 16px;
-    text-align: center;
-    border-bottom: 1px solid #e2e8f0;
-  }
-  th {
-    background-color: #e7edf3;
-    color: #2a3f54;
-    font-weight: bold;
-  }
-  tr:nth-child(even) { background-color: #f8fafc; }
-  tr:hover { background-color: #f1f5f9; }
-  
-  /* Ошибки */
-  .error-message {
-    text-align: center;
-    color: #d9534f;
-    font-weight: bold;
-    margin-bottom: 20px;
-  }
-  
-  /* Сброс формы */
-  .reset-button button {
-    background-color: #e98787;
-  }
-  
+  box-sizing: border-box;
+}
+
+/* Всегда резервируем место под скроллбар */
+html {
+  overflow-y: scroll;
+}
+
+/* Базовые настройки */
+body {
+  font-family: "Segoe UI", sans-serif;
+  background-color: #f4f6f9;
+  color: #2e3b4e;
+  margin: 5px;
+  padding: 5px;
+}
+
+/* Заголовки */
+h1, h2 {
+  text-align: center;
+  color: #1a2634;
+  margin-bottom: 10px;
+}
+
+/* Кнопки навигации */
+.nav-button {
+  display: inline-block;
+  width: 180px;
+  background-color: #2a3f54;
+  color: #fff;
+  text-decoration: none;
+  padding: 8px 10px;
+  border-radius: 6px;
+  font-size: 12px;
+  text-align: center;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  margin: 0 5px 10px;
+}
+.nav-button:hover {
+  background-color: #1a2634;
+}
+
+/* Общие стили для input, select, button */
+input, select, button {
+  width: 180px;
+  padding: 8px 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-family: inherit;
+  font-size: inherit;
+  box-sizing: border-box;
+}
+button {
+  background-color: #2a3f54;
+  color: #fff;
+  border: none;
+  transition: background-color 0.2s ease;
+}
+button:hover {
+  background-color: #1a2634;
+}
+
+/* Специальные формы */
+form {
+  background-color: #ffffff;
+  padding: 10px;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  max-width: 1300px;
+  margin: 0 auto 20px;
+}
+
+/* Таблицы */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.06);
+}
+th, td {
+  padding: 12px 16px;
+  text-align: center;
+  border-bottom: 1px solid #e2e8f0;
+}
+th {
+  background-color: #e7edf3;
+  color: #2a3f54;
+  font-weight: bold;
+}
+tr:nth-child(even) { background-color: #f8fafc; }
+tr:hover { background-color: #f1f5f9; }
+
+/* Ошибки */
+.error-message {
+  text-align: center;
+  color: #d9534f;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+/* Сброс формы */
+.reset-button button {
+  background-color: #e98787;
+}

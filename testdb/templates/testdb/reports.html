@@ -4,7 +4,7 @@
 {% block content %}
     <div class="report-container">
         <div class="filter-section">
-            <h2>Параметры отчета</h2>
+            <h2>Формирование отчета</h2>
             <form method="GET">
                 <div class="filter-group">
                     От:<input type="date" class="date-input" name="start_date">
@@ -62,11 +62,13 @@
             <tr>
                 <th>Статья</th>
                 <th>Количество</th>
+                <th>Процент</th>
             </tr>
             {% for item in report_data %}
             <tr>
                 <td>{{ item.article_num }}</td>
                 <td>{{ item.count }}</td>
+                <td>{{ item.percent }}%</td>
             </tr>
             {% endfor %}
         </table>

@@ -48,7 +48,6 @@ class LocalCriminals(models.Model):
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
 
-        # Перенос федеральных записей
         federal_records = FederalWanted.objects.filter(person_id=self.person_id)
         for record in federal_records:
             try:
@@ -88,7 +87,6 @@ class LocalCriminals(models.Model):
         except Article.DoesNotExist:
             pass
 
-        # Формирование final_panishment
         panishments = Panishment.objects.filter(cs=self)
         
         total_fine = 0

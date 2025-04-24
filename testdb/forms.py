@@ -6,7 +6,7 @@ class LocalCriminalsForm(forms.ModelForm):
     arrest_time = forms.DateField(
         widget=forms.DateInput(attrs={
             'type': 'date',
-            'placeholder': 'Дата ареста'  # плейсхолдер для даты
+            'placeholder': 'Дата ареста'
         }),
         label="Время ареста",
         initial=datetime.date.today,
@@ -19,7 +19,6 @@ class LocalCriminalsForm(forms.ModelForm):
             'person_id': forms.TextInput(attrs={'placeholder': 'ID'}),
             'fio':        forms.TextInput(attrs={'placeholder': 'ФИО'}),
             'article_num':forms.TextInput(attrs={'placeholder': 'Статья'}),
-            # 'arrest_time' уже задан выше
         }
 
     def __init__(self, *args, **kwargs):
